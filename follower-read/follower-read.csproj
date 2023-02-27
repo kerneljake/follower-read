@@ -8,4 +8,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NpgsqlYugabyteDB" Version="8.0.0-yb-1-beta" />
+  </ItemGroup>
 </Project>
