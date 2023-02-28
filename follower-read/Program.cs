@@ -26,22 +26,28 @@ namespace Yugabyte_CSharp_Demo
                         Console.WriteLine("Inserted data (1, 'John', 35, 'CSharp')");
                         */
 
-                        NpgsqlCommand sessionCharacterisitcs = new NpgsqlCommand("SET SESSION CHARACTERISTICS AS TRANSACTION READ ONLY", connection);
-                        sessionCharacterisitcs.ExecuteNonQuery();
+                        NpgsqlCommand myCommand = new NpgsqlCommand("SET SESSION CHARACTERISTICS AS TRANSACTION READ ONLY", connection);
+                        myCommand.ExecuteNonQuery();
+
+                        myCommand.CommandText = "SELECT(host(inet_server_addr()))";
+                        NpgsqlDataReader myReader = myCommand.ExecuteReader();
+                        myReader.Read();
+                        String ip = myReader.GetString(0);
+                        //Console.WriteLine("ip = {0}", ip);
+                        myReader.Close();
 
                         NpgsqlCommand myQuery = new NpgsqlCommand("SELECT name, age, language FROM employee WHERE id = @EmployeeId", connection);
-                        myQuery.Parameters.Add("@EmployeeId", YBNpgsqlTypes.NpgsqlDbType.Integer);
+                        myQuery.Parameters.Add("@EmployeeId", YBNpgsqlTypes.NpgsqlDbType.Integer);  // YBNpgsqlTypes
                         myQuery.Parameters["@EmployeeId"].Value = 1;
 
                         while (true)
                         {
                             DateTime before = DateTime.Now;
                             NpgsqlDataReader reader = myQuery.ExecuteReader();
-                            //transaction.Commit();
                             DateTime after = DateTime.Now;
                             TimeSpan timeSpan = after - before;
 
-                            Console.WriteLine("Query took {0}ms and returned:\nName\tAge\tLanguage", timeSpan.TotalMilliseconds);
+                            Console.WriteLine("Query to {0} took {1}ms and returned:\nName\tAge\tLanguage", ip, timeSpan.TotalMilliseconds);
                             while (reader.Read())
                             {
                                 Console.WriteLine("{0}\t{1}\t{2}", reader.GetString(0), reader.GetInt32(1), reader.GetString(2));
