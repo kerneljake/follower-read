@@ -6,7 +6,7 @@ namespace Yugabyte_CSharp_Demo
     {
         static void Main(string[] args)
         {
-            var connStringBuilder = "host=127.0.0.1,127.0.0.2,127.0.0.3;port=5433;database=yugabyte;userid=yugabyte;ApplicationName=tstest;Load Balance Hosts=true;Options=-c yb_read_from_followers=true;Topology Keys=onprem.pdc.rack1:1,onprem.fdc.rack1:2,azure.us-south-central.zone1:3";
+            var connStringBuilder = "host=127.0.0.1,127.0.0.2,127.0.0.3,127.0.0.4,127.0.0.5;port=5433;database=yugabyte;userid=yugabyte;ApplicationName=tstest;Pooling=true;Load Balance Hosts=true;Options=-c yb_read_from_followers=true;Topology Keys=onprem.pdc.rack1:1,onprem.pdc.rack2:2,onprem.fdc.rack1:3,onprem.fdc.rack2:4,azure.us-south-central.zone1:5";
             NpgsqlConnection connection = new NpgsqlConnection(connStringBuilder);
             try
             {
@@ -16,7 +16,7 @@ namespace Yugabyte_CSharp_Demo
                     {
                         connection.Open();
 
-                        /* 
+                        /*  
                         NpgsqlCommand empCreateCmd = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS employee (id int PRIMARY KEY, name varchar, age int, language varchar) SPLIT INTO 1 TABLETS;", connection);
                         empCreateCmd.ExecuteNonQuery();
                         Console.WriteLine("Created table Employee");
@@ -33,7 +33,6 @@ namespace Yugabyte_CSharp_Demo
                         NpgsqlDataReader myReader = myCommand.ExecuteReader();
                         myReader.Read();
                         String ip = myReader.GetString(0);
-                        //Console.WriteLine("ip = {0}", ip);
                         myReader.Close();
 
                         NpgsqlCommand myQuery = new NpgsqlCommand("SELECT name, age, language FROM employee WHERE id = @EmployeeId", connection);
@@ -60,6 +59,10 @@ namespace Yugabyte_CSharp_Demo
                     catch (Exception ex)
                     {
                         Console.WriteLine("Inner catch: " + ex.Message);
+                    }
+                    finally
+                    {
+                        connection.Close();
                     }
                 } /*while*/
             }
