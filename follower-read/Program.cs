@@ -6,7 +6,7 @@ namespace Yugabyte_CSharp_Demo
     {
         static void Main(string[] args)
         {
-            var connStringBuilder = "host=127.0.0.1,127.0.0.2,127.0.0.3,127.0.0.4,127.0.0.5;port=5433;database=yugabyte;userid=yugabyte;ApplicationName=tstest;Pooling=true;Load Balance Hosts=true;Options=-c yb_read_from_followers=true;Topology Keys=onprem.pdc.rack1:1,onprem.pdc.rack2:2,onprem.fdc.rack1:3,onprem.fdc.rack2:4,azure.us-south-central.zone1:5";
+            var connStringBuilder = "host=127.0.0.1,127.0.0.2,127.0.0.3,127.0.0.4,127.0.0.5;port=5433;database=yugabyte;userid=yugabyte;ApplicationName=tstest;YB Servers Refresh Interval=10;Pooling=true;Load Balance Hosts=true;Options=-c yb_read_from_followers=true;Topology Keys=onprem.pdc.rack1:1,onprem.pdc.rack2:2,onprem.fdc.rack1:3,onprem.fdc.rack2:4,azure.us-south-central.zone1:5";
             NpgsqlConnection connection = new NpgsqlConnection(connStringBuilder);
             try
             {
