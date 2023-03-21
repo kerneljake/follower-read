@@ -10,5 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="NpgsqlYugabyteDB" Version="8.0.0-yb-1-beta" />
+    <PackageReference Include="Npgsql" Version="8.0.0-preview.2" />
   </ItemGroup>
 </Project>
