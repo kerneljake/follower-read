@@ -5,6 +5,7 @@ namespace Yugabyte_CSharp_Demo
 {
     class Program
     {
+        private static int NUM_THREADS = 5;
         private static NpgsqlDataSource? dataSource = null;
 
         static void Main(string[] args)
@@ -16,7 +17,7 @@ namespace Yugabyte_CSharp_Demo
 
             Random random = new Random();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < NUM_THREADS; i++)
             {
                 Thread t = new Thread(Worker);
                 t.Start();
